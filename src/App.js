@@ -97,6 +97,7 @@ function App(){
     new Audio(chime).play();
   }
 
+  const teams = ["The Warriors", "Lamario"]
 
 
   return (
@@ -115,7 +116,8 @@ function App(){
       ):(
         <div className = "timer">
           <header className = "timer-header">
-            {seconds === 0 ? (<h1>The Pick is In...</h1>):(<h1 style={{color: '#282c34'}}>.</h1>)}
+            {seconds === 0 ? (<h1>The Pick is In...</h1>):
+            (<h1>On the Clock: {teams[0]}</h1>)}
             <div className = "time-group">
                 <h1 className='time'>{Math.floor(seconds/60)}:{seconds%60<10? 0 : ""}{seconds-(Math.floor(seconds/60)*60)}</h1>
                 <button className="button" onClick={backOne}>
@@ -134,6 +136,7 @@ function App(){
         </div>
       )}
     </div>
+  
   
   
   
