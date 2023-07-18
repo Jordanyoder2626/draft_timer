@@ -1,18 +1,33 @@
-import bml from './BML_LOGO.png'
+import bml from './BML_LOGO.png';
+import bmldraft from './bmldraft.png';
 import './App.css';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import chime from './nfl-draft-chime.mp3'
+import chime from './nfl-draft-chime.mp3';
+import nfl from './nfl-theme-song.mp3';
+
+import dak from './logos/dak.jpg'
+import dirk from './logos/dirk.jpg'
+import gustavo from './logos/gustavo.jpg'
+import hurts from './logos/hurts.jpg'
+import lamario from './logos/lamario.jpg'
+import leighton from './logos/leighton.jpg'
+import peen from './logos/peen.png'
+import phoenix from './logos/phoenix.jpg'
+import warrior from './logos/warrior.jpg'
+import fants from './logos/fants.jpg'
+
 
 
 
 
 function App(){
-  const [seconds, setSeconds] = useState(5);
+  const [seconds, setSeconds] = useState(120);
   const [isActive, setIsActive] = useState(false);
   const [pick, setPick] = useState(1);
   const [round, setRound] = useState(1);
   const [isOdd, setIsOdd] = useState(true);
+  const [pIn, setPIn] = useState(false);
 
 
   const [inProgress, setInProgress] = React.useState(false);
@@ -55,7 +70,7 @@ function App(){
 
 
   function decreasePick(){
-    if(round == 1 && pick == 1){
+    if(round === 1 && pick === 1){
       return;
     }
     if(pick == 1){
@@ -73,23 +88,31 @@ function App(){
 
 
   function toggle() {
+    if(isActive){
+      sound();
+      setPIn(true);
+    }
+
     setIsActive(!isActive);
   }
 
   function reset() {
+    setPIn(false);
     setSeconds(120);
     setIsActive(true);
     increasePick()
   }
 
   const startDraft = (event) => {
-
-    console.log("Button Clicked")
+    new Audio(nfl).play();
     setInProgress(true);
 
   }
 
   const backOne = (event) => {
+    setPIn(false);
+    setSeconds(120);
+    setIsActive(true);
     decreasePick();
   }
 
@@ -97,7 +120,10 @@ function App(){
     new Audio(chime).play();
   }
 
-  const teams = ["The Warriors", "Lamario"]
+  const teams = ["The Warriors", "Lamario", "Lamario Eats PEEN", "Dak and Yellow", "I Shat My Fants", "The Rising Phoenix",
+                  "Gustavo's Rocks", "It Really Hurts", "Mighty Acorns", "Kitty's Revenge"];
+
+  const logos = [warrior, lamario, peen, dak, fants, phoenix, gustavo, hurts, dirk, leighton];
 
 
   return (
@@ -105,32 +131,32 @@ function App(){
       {!inProgress ?(
         <div className="App">
           <header className="App-header">
-            <img src={bml} className="App-logo" alt="logo" />
+            <img src={bmldraft} className="App-logo" alt="logo" />
             <p>
               Welcome to the 2023-2024 BML Draft
             </p>
-            <button className="button" onClick={startDraft}>Start Draft</button>
+            <button className="button" onClick={startDraft} style={{width: '20vw', height: '10vh', fontSize: '25px'}}>Start Draft</button>
           </header>
           
         </div>
       ):(
         <div className = "timer">
           <header className = "timer-header">
-            {seconds === 0 ? (<h1>The Pick is In...</h1>):
-            (<h1>On the Clock: {teams[0]}</h1>)}
+            {seconds === 0 || pIn ? (<h1 className='onC'>The Pick is In...</h1>):
+            (<h1 className='onC'>On the Clock: {teams[Math.abs(-11*(round%2) + 11 - pick)-1]}</h1>)}
             <div className = "time-group">
-                <h1 className='time'>{Math.floor(seconds/60)}:{seconds%60<10? 0 : ""}{seconds-(Math.floor(seconds/60)*60)}</h1>
+                <img src={logos[Math.abs(-11*(round%2) + 11 - pick)-1]} className='circle' alt={bml}/>
+                <h2 className='time'>{Math.floor(seconds/60)}:{seconds%60<10? 0 : ""}{seconds-(Math.floor(seconds/60)*60)}</h2>
                 <button className="button" onClick={backOne}>
                   Previous Pick
                 </button>
                 <button className={`button button-primary button-primary-${isActive ? 'active' : 'inactive'}`} onClick={toggle}>
-                  {isActive ? 'Pause' : 'Start'}
+                  {isActive ? 'Pick Is In' : 'Start'}
                 </button>
                 <button className="button" onClick={reset}>
                   Next Pick
                 </button>
-                <h1>Round: {round}, Pick: {pick}</h1>
-                <h1>Current Spot: {isOdd ? pick : 11 - pick}</h1>
+                <h1 className='round'>Round: {round}, Pick: {pick}</h1>
             </div>
           </header>
         </div>
