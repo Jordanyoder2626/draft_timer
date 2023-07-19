@@ -22,7 +22,7 @@ import fants from './logos/fants.jpg'
 
 
 function App(){
-  const [seconds, setSeconds] = useState(120);
+  const [seconds, setSeconds] = useState(5);
   const [isActive, setIsActive] = useState(false);
   const [pick, setPick] = useState(1);
   const [round, setRound] = useState(1);
@@ -31,6 +31,34 @@ function App(){
 
 
   const [inProgress, setInProgress] = React.useState(false);
+
+
+
+  useEffect(() => {
+      const keyDownHandler = event => {
+
+        if (event.key === ' ') {
+          event.preventDefault();
+
+          if(inProgress && !pIn){
+            toggle();
+          }
+          if(inProgress && pIn && seconds !==0){
+            reset();
+          }
+          if(seconds==0){
+            reset();
+          }
+        }
+      };
+
+      document.addEventListener('keydown', keyDownHandler);
+
+      return () => {
+        document.removeEventListener('keydown', keyDownHandler);
+      };
+    }, [inProgress, isActive, pIn, seconds]);
+
 
   useEffect(() => {
     let interval = null;
@@ -97,15 +125,17 @@ function App(){
   }
 
   function reset() {
+    
+    increasePick()
     setPIn(false);
     setSeconds(120);
     setIsActive(true);
-    increasePick()
   }
 
   const startDraft = (event) => {
-    new Audio(nfl).play();
+    
     setInProgress(true);
+    new Audio(nfl).play();
 
   }
 
@@ -119,6 +149,10 @@ function App(){
   function sound(){
     new Audio(chime).play();
   }
+
+  
+
+  
 
   const teams = ["The Warriors", "Lamario", "Lamario Eats PEEN", "Dak and Yellow", "I Shat My Fants", "The Rising Phoenix",
                   "Gustavo's Rocks", "It Really Hurts", "Mighty Acorns", "Kitty's Revenge"];
@@ -141,7 +175,7 @@ function App(){
         </div>
       ):(
         <div className = "timer">
-          <header className = "timer-header">
+          <header className = "timer-header" >
             {seconds === 0 || pIn ? (<h1 className='onC'>The Pick is In...</h1>):
             (<h1 className='onC'>On the Clock: {teams[Math.abs(-11*(round%2) + 11 - pick)-1]}</h1>)}
             <div className = "time-group">
