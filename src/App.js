@@ -36,6 +36,9 @@ function App(){
 
   useEffect(() => {
       const keyDownHandler = event => {
+        if(event.key === 'Enter'){
+          startDraft();
+        }
 
         if (event.key === ' ') {
           event.preventDefault();
@@ -57,7 +60,7 @@ function App(){
       return () => {
         document.removeEventListener('keydown', keyDownHandler);
       };
-    }, [inProgress, isActive, pIn, seconds]);
+    }, [inProgress, isActive, pIn, seconds, toggle, reset]);
 
 
   useEffect(() => {
@@ -132,7 +135,7 @@ function App(){
     setIsActive(true);
   }
 
-  const startDraft = (event) => {
+  const startDraft = () => {
     
     setInProgress(true);
     new Audio(nfl).play();
@@ -175,12 +178,13 @@ function App(){
         </div>
       ):(
         <div className = "timer">
-          <header className = "timer-header" >
+          <header className = "timer-header" style={{backgroundColor: pIn ? 'black':null}}>
             {seconds === 0 || pIn ? (<h1 className='onC'>The Pick is In...</h1>):
             (<h1 className='onC'>On the Clock: {teams[Math.abs(-11*(round%2) + 11 - pick)-1]}</h1>)}
-            <div className = "time-group">
-                <img src={logos[Math.abs(-11*(round%2) + 11 - pick)-1]} className='circle' alt={bml}/>
-                <h2 className='time'>{Math.floor(seconds/60)}:{seconds%60<10? 0 : ""}{seconds-(Math.floor(seconds/60)*60)}</h2>
+            
+            <img src={logos[Math.abs(-11*(round%2) + 11 - pick)-1]} className='circle' alt={bml}  />
+            <div className = "time-group" style={{opacity: pIn ? 0: 100}}>
+                <h2 className='time' >{Math.floor(seconds/60)}:{seconds%60<10? 0 : ""}{seconds-(Math.floor(seconds/60)*60)}</h2>
                 <button className="button" onClick={backOne}>
                   Previous Pick
                 </button>
