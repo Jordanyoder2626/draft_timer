@@ -22,7 +22,7 @@ import fants from './logos/fants.jpg'
 
 
 function App(){
-  const [seconds, setSeconds] = useState(5);
+  const [seconds, setSeconds] = useState(120);
   const [isActive, setIsActive] = useState(false);
   const [pick, setPick] = useState(1);
   const [round, setRound] = useState(1);
@@ -46,7 +46,7 @@ function App(){
           if(inProgress && pIn && seconds !==0){
             reset();
           }
-          if(seconds==0){
+          if(seconds===0){
             reset();
           }
         }
@@ -101,7 +101,7 @@ function App(){
     if(round === 1 && pick === 1){
       return;
     }
-    if(pick == 1){
+    if(pick === 1){
       setPick(10);
       setRound(round - 1);
       if(isOdd){
