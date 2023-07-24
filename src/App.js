@@ -31,6 +31,7 @@ function App(){
 
 
   const [inProgress, setInProgress] = React.useState(false);
+  const [move, setMove] = React.useState(true);
 
 
 
@@ -48,9 +49,11 @@ function App(){
             toggle();
           }
           if(inProgress && pIn && seconds !==0){
+            setMove(false);
             reset();
           }
           if(seconds===0){
+            setMove(false);
             reset();
           }
         }
@@ -61,13 +64,20 @@ function App(){
       return () => {
         document.removeEventListener('keydown', keyDownHandler);
       };
-    }, [inProgress, isActive, pIn, seconds, toggle, reset]);
+    }, [inProgress, isActive, pIn, seconds, move, toggle, reset]);
 
 
   useEffect(() => {
     let interval = null;
     if (isActive) {
       interval = setInterval(() => {
+        if(seconds < 150){
+          setMove(true);
+        }
+        if(pIn){
+          setMove(false);
+        }
+
         if(seconds > 0){
         setSeconds(seconds => seconds - 1);
         }else{
@@ -80,7 +90,7 @@ function App(){
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [isActive, seconds]);
+  }, [isActive, seconds, move, pIn]);
 
   function increasePick(){
     
@@ -124,6 +134,7 @@ function App(){
     if(isActive){
       sound();
       setPIn(true);
+      setMove(false);
     }
 
     setIsActive(!isActive);
@@ -190,7 +201,8 @@ function App(){
             <h1 className= "pick-words" style={{
               opacity: !pIn ? 0: 100, 
               transitionDelay: !pIn? '0ms':'3000ms', 
-              transitionDuration: !pIn?'1000ms': '3000ms'}}>The Pick is In...</h1>
+              transitionDuration: !pIn?'1000ms': '3000ms',
+              left: move?'0px':null}}>The Pick is In...</h1>
             <div className = "time-group" style={{opacity: pIn ? 0: 100}}>
                 <h2 className='time' >{Math.floor(seconds/60)}:{seconds%60<10? 0 : ""}{seconds-(Math.floor(seconds/60)*60)}</h2>
                 <button className="button" onClick={backOne}>
