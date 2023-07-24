@@ -67,7 +67,9 @@
   border-color: white;
 }
 
-
+.words{
+  transition: opacity 3000ms ease;
+}
 
 .timer {
   text-align: center;
@@ -104,7 +106,8 @@
   height: 350px;
   object-fit: cover;
   border-radius: 50%; 
-  transition: scale 3000ms ease-in-out;
+  transition: scale 5000ms ease-in-out;
+  z-index: 5;
   } 
 .onC{
   font-size: 100px;
@@ -114,5 +117,14 @@
 
 .round{
   font-size: 50px;
+}
+
+.pick-words{
+  color: white;
+  transition: opacity 3000ms ease-out;
+  position:absolute;
+  top: 65%;
+  font-size: 100px;
+  align-content: center;
 }
 

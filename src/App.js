@@ -36,7 +36,8 @@ function App(){
 
   useEffect(() => {
       const keyDownHandler = event => {
-        if(event.key === 'Enter'){
+        if(event.key === 'Enter' && !inProgress){
+          event.preventDefault();
           startDraft();
         }
 
@@ -70,6 +71,7 @@ function App(){
         if(seconds > 0){
         setSeconds(seconds => seconds - 1);
         }else{
+          setPIn(true);
           sound();
           setIsActive(false);
         }
@@ -179,10 +181,16 @@ function App(){
       ):(
         <div className = "timer">
           <header className = "timer-header" style={{backgroundColor: pIn ? 'black':null}}>
-            {seconds === 0 || pIn ? (<h1 className='onC'>The Pick is In...</h1>):
-            (<h1 className='onC'>On the Clock: {teams[Math.abs(-11*(round%2) + 11 - pick)-1]}</h1>)}
+            <div className='words'  style={{opacity: pIn ? 0: 100}} >
+              <h1 className='onC'>On the Clock: {teams[Math.abs(-11*(round%2) + 11 - pick)-1]}</h1>
+            </div>
             
-            <img src={logos[Math.abs(-11*(round%2) + 11 - pick)-1]} className='circle' alt={bml}  />
+            
+            <img src={logos[Math.abs(-11*(round%2) + 11 - pick)-1]} className='circle' alt={bml} style={{scale: pIn ? '1.75': '1'}} />
+            <h1 className= "pick-words" style={{
+              opacity: !pIn ? 0: 100, 
+              transitionDelay: !pIn? '0ms':'3000ms', 
+              transitionDuration: !pIn?'1000ms': '3000ms'}}>The Pick is In...</h1>
             <div className = "time-group" style={{opacity: pIn ? 0: 100}}>
                 <h2 className='time' >{Math.floor(seconds/60)}:{seconds%60<10? 0 : ""}{seconds-(Math.floor(seconds/60)*60)}</h2>
                 <button className="button" onClick={backOne}>
