@@ -9,10 +9,10 @@
 ## How to Build + Deploy
 
 Run the following commands on the command line to build and start application
-'''
+```
 npm install
 npm start
-'''
+```
 
 ## How to edit
 Add in images to the logos folder and import images desired for teams
