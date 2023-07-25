@@ -15,7 +15,7 @@ npm start
 ```
 
 ## How to edit
-Add in images to the logos folder and import images desired for \n
-Edit teams and logos arrays to draft order \n
-Change initial useState for timer for shorter/longer time \n
-Currently supports 10 teams, but can look into editing code to support more/less \n
+Add in images to the logos folder and import images desired for
+Edit teams and logos arrays to draft order
+Change initial useState for timer for shorter/longer time
+Currently supports 10 teams, but can look into editing code to support more/less
