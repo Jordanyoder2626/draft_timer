@@ -32,6 +32,7 @@ function App(){
 
   const [inProgress, setInProgress] = React.useState(false);
   const [move, setMove] = React.useState(true);
+  const [spot, setSpot] = React.useState(1);
 
 
 
@@ -69,6 +70,7 @@ function App(){
 
   useEffect(() => {
     let interval = null;
+    setSpot(Math.abs(-11*(round%2) + 11 - pick)-1);
     if (isActive) {
       interval = setInterval(() => {
         if(seconds < 150){
@@ -81,6 +83,7 @@ function App(){
         if(seconds > 0){
         setSeconds(seconds => seconds - 1);
         }else{
+          setMove(false);
           setPIn(true);
           sound();
           setIsActive(false);
@@ -90,7 +93,7 @@ function App(){
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [isActive, seconds, move, pIn]);
+  }, [isActive, seconds, move, pIn, spot, round, pick, setSpot]);
 
   function increasePick(){
     
@@ -193,11 +196,14 @@ function App(){
         <div className = "timer">
           <header className = "timer-header" style={{backgroundColor: pIn ? 'black':null}}>
             <div className='words'  style={{opacity: pIn ? 0: 100}} >
-              <h1 className='onC'>On the Clock: {teams[Math.abs(-11*(round%2) + 11 - pick)-1]}</h1>
+              <h1 className='onC'>On the Clock: {teams[spot]}</h1>
             </div>
             
             
-            <img src={logos[Math.abs(-11*(round%2) + 11 - pick)-1]} className='circle' alt={bml} style={{scale: pIn ? '1.75': '1'}} />
+            <img src={logos[spot]} className='circle' alt={bml} style={{scale: pIn ? '1.75': '1'}} />
+            <img src={logos[round%2===1? spot+1 - Math.floor(pick/10):spot-1 + Math.floor(pick/10)]} className='next' alt={bml} style={{opacity: pIn ? 0 : 100}}/>
+            <img src={bml} className='next-bml' alt={bml} style={{opacity: pIn ? 0 : 100}}/>
+            <div className='next-words' style={{opacity: pIn ? 0 : 100}}>Next Pick:</div>
             <h1 className= "pick-words" style={{
               opacity: !pIn ? 0: 100, 
               transitionDelay: !pIn? '0ms':'3000ms', 

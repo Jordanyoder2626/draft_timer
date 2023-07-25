@@ -114,6 +114,8 @@
   font-size: 100px;
   margin: 0px;
   padding: 0px;
+  border-bottom: white;
+  
 }
 
 .round{
@@ -132,3 +134,31 @@
   user-select: none;
 }
 
+
+.next{
+  width: 250px;
+  height: 250px;
+  position: absolute;
+  left: 75%;
+  top: calc(50% - 100px);
+  object-fit: cover;
+  border-radius: 50%; 
+  transition: opacity 3000ms ease;
+}
+
+.next-bml{
+  height: 250px;
+  position: absolute;
+  right: calc(75% + 20px);
+  top: calc(50% - 100px);
+  
+  transition: opacity 3000ms ease;
+}
+.next-words{
+  font-size: 50px;
+  position: absolute;
+  left: calc(75% + 22px);
+  top: calc(50% - 165px);
+  font-family: fantasy;
+  transition: opacity 3000ms ease;
+}
