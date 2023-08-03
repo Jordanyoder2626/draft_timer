@@ -8,7 +8,7 @@ import nfl from './nfl-theme-song.mp3';
 
 import dak from './logos/dak.jpg'
 import dirk from './logos/dirk.jpg'
-import gustavo from './logos/gustavo.jpg'
+import gustavo from './logos/gustavo.svg'
 import hurts from './logos/hurts.jpg'
 import lamario from './logos/lamario.jpg'
 import leighton from './logos/leighton.jpg'

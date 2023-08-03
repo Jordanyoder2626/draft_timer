@@ -115,7 +115,10 @@
   margin: 0px;
   padding: 0px;
   border-bottom: white;
-  
+  text-shadow: 2px 2px 8px rgba(27, 26, 29, 0.1),
+                3px 4px 8px rgba(33, 29, 38, 0.15),
+                4px 6px 8px rgba(38, 34, 43, 0.2),
+                5px 8px 8px rgba(26, 22, 31, 0.25);
 }
 
 .round{
@@ -129,6 +132,7 @@
   position:absolute;
   top: 65%;
   font-size: 100px;
+  font-style: italic;
   align-content: center;
   z-index: 1;
   user-select: none;
