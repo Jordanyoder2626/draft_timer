@@ -12,7 +12,7 @@
 
 ## How to Build + Deploy
 
-Run the following commands on the command line to build and start application
+Run the following commands on the command line inside of the "draft_timer" folder to build and start application
 ```
 npm install
 npm start
