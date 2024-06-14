@@ -1,8 +1,10 @@
 # Fantasy Football Draft Timer
 
+### NOTE: Not intended to be scalable, intended for personal use but want to showcase React ability took ~5-10 hours
+
 ### Draft timer created for offline fantasy football drafts includes: team logo customization, draft order optimization, up next, time options, and pick sounds + transitions
 
-### NOTE: Not intended to be scalable, intended for personal use but want to showcase React ability
+
 
 ## Prerequisites
 
