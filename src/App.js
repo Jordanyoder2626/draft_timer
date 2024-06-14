@@ -5,6 +5,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import chime from './nfl-draft-chime.mp3';
 import nfl from './nfl-theme-song.mp3';
+import Modal from './Modal'
 
 import dak from './logos/dak.jpg'
 import dirk from './logos/dirk.jpg'
@@ -28,6 +29,7 @@ function App(){
   const [round, setRound] = useState(1);
   const [isOdd, setIsOdd] = useState(true);
   const [pIn, setPIn] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
 
   const [inProgress, setInProgress] = React.useState(false);
@@ -41,6 +43,11 @@ function App(){
         if(event.key === 'Enter' && !inProgress){
           event.preventDefault();
           startDraft();
+        }
+
+        if(event.key === 'Escape' && inProgress){
+          event.preventDefault();
+          setIsOpen(true);
         }
 
         if (event.key === ' ') {
@@ -165,6 +172,11 @@ function App(){
     decreasePick();
   }
 
+  const exit = (event) => {
+    setIsActive(false);
+    setInProgress(false);
+  }
+
   function sound(){
     new Audio(chime).play();
   }
@@ -173,11 +185,11 @@ function App(){
 
   
 
-  const teams = ["The Warriors", "Lamario", "Lamario Eats PEEN", "Dak and Yellow", "I Shat My Fants", "The Rising Phoenix",
-                  "Gustavo's Rocks", "It Really Hurts", "Mighty Acorns", "Kitty's Revenge"];
 
-  const logos = [warrior, lamario, peen, dak, fants, phoenix, gustavo, hurts, dirk, leighton];
 
+  const teams = ["Kitty's Revenge", "Lamario", "Not Last", "Mighty Acorns", "The Warriors", "Dak and Yellow", "Gustavo's Rocks",
+                  "Xynh",  "Team Rendleman", "The Rising Phoenix"];
+  const logos = [leighton, lamario, peen, dirk, warrior, dak, gustavo, hurts, warrior, phoenix];
 
   return (
     <div>
@@ -194,7 +206,12 @@ function App(){
         </div>
       ):(
         <div className = "timer">
+          
           <header className = "timer-header" style={{backgroundColor: pIn ? 'black':null}}>
+          
+          {/*<button className='button' onClick={setIsOpen(true)}>Exit Draft</button>*/}
+          {isOpen ? <Modal setIsOpen={setIsOpen}/> : null}
+          
             <div className='words'  style={{opacity: pIn ? 0: 100}} >
               <h1 className='onC'>On the Clock: {teams[spot]}</h1>
             </div>
