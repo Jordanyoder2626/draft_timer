@@ -173,10 +173,10 @@ function App(){
 
   
 
-  const teams = ["The Warriors", "Lamario", "Lamario Eats PEEN", "Dak and Yellow", "I Shat My Fants", "The Rising Phoenix",
+  const teams = ["The Warriors", "Lamario", "Not Last", "Dak and Yellow", "Fants", "The Rising Phoenix",
                   "Gustavo's Rocks", "It Really Hurts", "Mighty Acorns", "Kitty's Revenge"];
 
-  const logos = [warrior, lamario, peen, dak, fants, phoenix, gustavo, hurts, dirk, leighton];
+  const logos = [warrior, lamario, peen, dak, warrior, phoenix, gustavo, hurts, dirk, leighton];
 
 
   return (
