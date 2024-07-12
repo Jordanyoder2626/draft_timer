@@ -188,8 +188,11 @@ function App(){
 
 
   const teams = ["Kitty's Revenge", "Lamario", "Not Last", "Mighty Acorns", "The Warriors", "Dak and Yellow", "Gustavo's Rocks",
-                  "Xynh",  "Team Rendleman", "The Rising Phoenix"];
+                  "Xynh",  "Levis losers", "The Rising Phoenix"];
   const logos = [leighton, lamario, peen, dirk, warrior, dak, gustavo, hurts, warrior, phoenix];
+  const finish = [1, 4, "Last", 5, 3, 6, 2, 8,9,7];
+  const ending = ["st", "th", "", "th", "rd", "th", "nd", "th", "th", "th"];
+  const records = ["27-47-1", "42-32", "40-35", "39-36", "46-29", "30-45", "43-32", "31-44", "39-36", "36-38-1" ];
 
   return (
     <div>
@@ -198,7 +201,7 @@ function App(){
           <header className="App-header">
             <img src={bmldraft} className="App-logo" alt="logo" />
             <p>
-              Welcome to the 2023-2024 BML Draft
+              Welcome to the 2024-2025 BML Draft
             </p>
             <button className="button" onClick={startDraft} style={{width: '20vw', height: '10vh', fontSize: '25px'}}>Start Draft</button>
           </header>
@@ -210,7 +213,7 @@ function App(){
           <header className = "timer-header" style={{backgroundColor: pIn ? 'black':null}}>
           
           {/*<button className='button' onClick={setIsOpen(true)}>Exit Draft</button>*/}
-          {isOpen ? <Modal setIsOpen={setIsOpen}/> : null}
+          {/*isOpen ? <Modal setIsOpen={setIsOpen}/> : null*/}
           
             <div className='words'  style={{opacity: pIn ? 0: 100}} >
               <h1 className='onC'>On the Clock: {teams[spot]}</h1>
@@ -220,6 +223,18 @@ function App(){
             <img src={logos[spot]} className='circle' alt={bml} style={{scale: pIn ? '1.75': '1'}} />
             <img src={logos[round%2===1? spot+1 - Math.floor(pick/10):spot-1 + Math.floor(pick/10)]} className='next' alt={bml} style={{opacity: pIn ? 0 : 100}}/>
             <img src={bml} className='next-bml' alt={bml} style={{opacity: pIn ? 0 : 100}}/>
+
+
+            <div className='tt-finish' style={{opacity: pIn ? 0 : 100}}>
+              <div className = 'tt-finish-font'>2023 Finish:</div>
+              <div className='tt-finish-place'>{finish[spot]}{ending[spot]}</div>
+            </div>
+
+            <div className='tt-record' style={{opacity: pIn ? 0 : 100}}>
+              <div className = 'tt-finish-font'>Career Record:</div>
+              <div className='tt-finish-place'>{records[spot]}</div>
+            </div>
+
             <div className='next-words' style={{opacity: pIn ? 0 : 100}}>Next Pick:</div>
             <h1 className= "pick-words" style={{
               opacity: !pIn ? 0: 100, 

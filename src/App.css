@@ -140,11 +140,12 @@
 
 
 .next{
+  align-items: center;
   width: 250px;
   height: 250px;
   position: absolute;
   left: 75%;
-  top: calc(50% - 100px);
+  top: calc(45% - 100px);
   object-fit: cover;
   border-radius: 50%; 
   transition: opacity 3000ms ease;
@@ -152,17 +153,56 @@
 
 .next-bml{
   height: 250px;
+  align-items: center;
   position: absolute;
   right: calc(75% + 20px);
-  top: calc(50% - 100px);
+  top: calc(45% - 100px);
   
   transition: opacity 3000ms ease;
 }
+.tt-finish{
+  position: absolute;
+
+  right: calc(75% - 10px);
+  top: 70%;
+  text-align: center;
+  font-size: 16px;
+  transition: opacity 3000ms ease;
+
+}
+.tt-record{
+  position: absolute;
+
+  left: calc(75% - 32px);
+  top: 70%;
+  text-align: center;
+  font-size: 16px;
+  transition: opacity 3000ms ease;
+  
+}
+
+.tt-finish-font{
+  font-size: 50px;
+  font-family:fantasy;
+  text-shadow: 2px 2px 8px rgba(27, 26, 29, 0.1),
+                3px 4px 8px rgba(33, 29, 38, 0.15),
+                4px 6px 8px rgba(38, 34, 43, 0.2),
+                5px 8px 8px rgba(26, 22, 31, 0.25);
+  
+}
+.tt-finish-place{
+  font-size: 75px;
+  text-shadow: 2px 2px 8px rgba(27, 26, 29, 0.1),
+                3px 4px 8px rgba(33, 29, 38, 0.15),
+                4px 6px 8px rgba(38, 34, 43, 0.2),
+                5px 8px 8px rgba(26, 22, 31, 0.25);
+}
+
 .next-words{
   font-size: 50px;
   position: absolute;
   left: calc(75% + 22px);
-  top: calc(50% - 165px);
+  top: calc(45% - 165px);
   font-family: fantasy;
   transition: opacity 3000ms ease;
 }
