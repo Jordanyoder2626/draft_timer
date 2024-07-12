@@ -5,7 +5,6 @@
 ### Draft timer created for offline fantasy football drafts includes: team logo customization, draft order optimization, up next, time options, and pick sounds + transitions
 
 
-
 ## Prerequisites
 
 * NodeJS
@@ -27,3 +26,4 @@ npm start
 ## How to use
 ##### On pre-draft screen the ENTER key will start draft in addition to button
 ##### Inside of draft SPACEBAR will initiate the pick being in and timer will stop, SPACEBAR again will start the next pick.
+
