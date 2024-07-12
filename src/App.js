@@ -5,6 +5,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import chime from './nfl-draft-chime.mp3';
 import nfl from './nfl-theme-song.mp3';
+import Modal from './Modal'
 
 import dak from './logos/dak.jpg'
 import dirk from './logos/dirk.jpg'
@@ -15,7 +16,7 @@ import leighton from './logos/leighton.jpg'
 import peen from './logos/peen.png'
 import phoenix from './logos/phoenix.jpg'
 import warrior from './logos/warrior.jpg'
-import fants from './logos/fants.jpg'
+import fants from './logos/levis.png'
 
 
 
@@ -28,6 +29,7 @@ function App(){
   const [round, setRound] = useState(1);
   const [isOdd, setIsOdd] = useState(true);
   const [pIn, setPIn] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
 
   const [inProgress, setInProgress] = React.useState(false);
@@ -41,6 +43,11 @@ function App(){
         if(event.key === 'Enter' && !inProgress){
           event.preventDefault();
           startDraft();
+        }
+
+        if(event.key === 'Escape' && inProgress){
+          event.preventDefault();
+          setIsOpen(true);
         }
 
         if (event.key === ' ') {
@@ -165,18 +172,35 @@ function App(){
     decreasePick();
   }
 
+  const exit = (event) => {
+    setIsActive(false);
+    setInProgress(false);
+  }
+
   function sound(){
     new Audio(chime).play();
   }
 
+  function Team(name, logo, finish, ending, record) {
+    this.name = name;
+    this.logo = logo;
+    this.finish = finish;
+    this.ending = ending;
+    this.record = record;
+  }
+  const la = new Team("Kitty's Revenge", leighton, 1, "st", "27-47-1");
+  const cs = new Team("Lamario", lamario, 4, "th", "42-32");
+  const cy = new Team("Not Last", peen, "Last", "", "40-35");
+  const lb = new Team("Mighty Acorns", dirk, 5, "th", "39-36");
+  const jy = new Team("The Warriors", warrior, 3, "rd", "46-29");
+  const qm = new Team("Dak and Yellow", dak, 6, "th", "30-45");
+  const cb = new Team("Gustavo's Rocks", gustavo, 2, "nd", "43-32");
+  const tw = new Team("Xynh", hurts, 8, "th", "31-44");
+  const rm = new Team("Levis' losers", fants, 9, "th", "39-36");
+  const ld = new Team("The Rising Phoenix", phoenix, 7, "th", "36-38-1" )
+
+  const order = [la, cs, cy, lb, jy, qm, cb, tw, rm, ld];
   
-
-  
-
-  const teams = ["The Warriors", "Lamario", "Not Last", "Dak and Yellow", "Fants", "The Rising Phoenix",
-                  "Gustavo's Rocks", "It Really Hurts", "Mighty Acorns", "Kitty's Revenge"];
-
-  const logos = [warrior, lamario, peen, dak, warrior, phoenix, gustavo, hurts, dirk, leighton];
 
 
   return (
@@ -186,7 +210,7 @@ function App(){
           <header className="App-header">
             <img src={bmldraft} className="App-logo" alt="logo" />
             <p>
-              Welcome to the 2023-2024 BML Draft
+              Welcome to the 2024-2025 BML Draft
             </p>
             <button className="button" onClick={startDraft} style={{width: '20vw', height: '10vh', fontSize: '25px'}}>Start Draft</button>
           </header>
@@ -194,15 +218,32 @@ function App(){
         </div>
       ):(
         <div className = "timer">
+          
           <header className = "timer-header" style={{backgroundColor: pIn ? 'black':null}}>
+          
+          {/*<button className='button' onClick={setIsOpen(true)}>Exit Draft</button>*/}
+          {/*isOpen ? <Modal setIsOpen={setIsOpen}/> : null*/}
+          
             <div className='words'  style={{opacity: pIn ? 0: 100}} >
-              <h1 className='onC'>On the Clock: {teams[spot]}</h1>
+              <h1 className='onC'>On the Clock: {order[spot].name}</h1>
             </div>
             
             
-            <img src={logos[spot]} className='circle' alt={bml} style={{scale: pIn ? '1.75': '1'}} />
-            <img src={logos[round%2===1? spot+1 - Math.floor(pick/10):spot-1 + Math.floor(pick/10)]} className='next' alt={bml} style={{opacity: pIn ? 0 : 100}}/>
+            <img src={order[spot].logo} className='circle' alt={bml} style={{scale: pIn ? '1.75': '1'}} />
+            <img src={order[round%2===1? spot+1 - Math.floor(pick/10):spot-1 + Math.floor(pick/10)].logo} className='next' alt={bml} style={{opacity: pIn ? 0 : 100}}/>
             <img src={bml} className='next-bml' alt={bml} style={{opacity: pIn ? 0 : 100}}/>
+
+
+            <div className='tt-finish' style={{opacity: pIn ? 0 : 100}}>
+              <div className = 'tt-finish-font'>2023 Finish:</div>
+              <div className='tt-finish-place'>{order[spot].finish}{order[spot].ending}</div>
+            </div>
+
+            <div className='tt-record' style={{opacity: pIn ? 0 : 100}}>
+              <div className = 'tt-finish-font'>Career Record:</div>
+              <div className='tt-finish-place'>{order[spot].record}</div>
+            </div>
+
             <div className='next-words' style={{opacity: pIn ? 0 : 100}}>Next Pick:</div>
             <h1 className= "pick-words" style={{
               opacity: !pIn ? 0: 100, 
