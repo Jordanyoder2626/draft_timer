@@ -16,7 +16,7 @@ import leighton from './logos/leighton.jpg'
 import peen from './logos/peen.png'
 import phoenix from './logos/phoenix.jpg'
 import warrior from './logos/warrior.jpg'
-import fants from './logos/fants.jpg'
+import fants from './logos/levis.png'
 
 
 
@@ -181,18 +181,26 @@ function App(){
     new Audio(chime).play();
   }
 
+  function Team(name, logo, finish, ending, record) {
+    this.name = name;
+    this.logo = logo;
+    this.finish = finish;
+    this.ending = ending;
+    this.record = record;
+  }
+  const la = new Team("Kitty's Revenge", leighton, 1, "st", "27-47-1");
+  const cs = new Team("Lamario", lamario, 4, "th", "42-32");
+  const cy = new Team("Not Last", peen, "Last", "", "40-35");
+  const lb = new Team("Mighty Acorns", dirk, 5, "th", "39-36");
+  const jy = new Team("The Warriors", warrior, 3, "rd", "46-29");
+  const qm = new Team("Dak and Yellow", dak, 6, "th", "30-45");
+  const cb = new Team("Gustavo's Rocks", gustavo, 2, "nd", "43-32");
+  const tw = new Team("Xynh", hurts, 8, "th", "31-44");
+  const rm = new Team("Levis' losers", fants, 9, "th", "39-36");
+  const ld = new Team("The Rising Phoenix", phoenix, 7, "th", "36-38-1" )
+
+  const order = [la, cs, cy, lb, jy, qm, cb, tw, rm, ld];
   
-
-  
-
-
-
-  const teams = ["Kitty's Revenge", "Lamario", "Not Last", "Mighty Acorns", "The Warriors", "Dak and Yellow", "Gustavo's Rocks",
-                  "Xynh",  "Levis losers", "The Rising Phoenix"];
-  const logos = [leighton, lamario, peen, dirk, warrior, dak, gustavo, hurts, warrior, phoenix];
-  const finish = [1, 4, "Last", 5, 3, 6, 2, 8,9,7];
-  const ending = ["st", "th", "", "th", "rd", "th", "nd", "th", "th", "th"];
-  const records = ["27-47-1", "42-32", "40-35", "39-36", "46-29", "30-45", "43-32", "31-44", "39-36", "36-38-1" ];
 
   return (
     <div>
@@ -216,23 +224,23 @@ function App(){
           {/*isOpen ? <Modal setIsOpen={setIsOpen}/> : null*/}
           
             <div className='words'  style={{opacity: pIn ? 0: 100}} >
-              <h1 className='onC'>On the Clock: {teams[spot]}</h1>
+              <h1 className='onC'>On the Clock: {order[spot].name}</h1>
             </div>
             
             
-            <img src={logos[spot]} className='circle' alt={bml} style={{scale: pIn ? '1.75': '1'}} />
-            <img src={logos[round%2===1? spot+1 - Math.floor(pick/10):spot-1 + Math.floor(pick/10)]} className='next' alt={bml} style={{opacity: pIn ? 0 : 100}}/>
+            <img src={order[spot].logo} className='circle' alt={bml} style={{scale: pIn ? '1.75': '1'}} />
+            <img src={order[round%2===1? spot+1 - Math.floor(pick/10):spot-1 + Math.floor(pick/10)].logo} className='next' alt={bml} style={{opacity: pIn ? 0 : 100}}/>
             <img src={bml} className='next-bml' alt={bml} style={{opacity: pIn ? 0 : 100}}/>
 
 
             <div className='tt-finish' style={{opacity: pIn ? 0 : 100}}>
               <div className = 'tt-finish-font'>2023 Finish:</div>
-              <div className='tt-finish-place'>{finish[spot]}{ending[spot]}</div>
+              <div className='tt-finish-place'>{order[spot].finish}{order[spot].ending}</div>
             </div>
 
             <div className='tt-record' style={{opacity: pIn ? 0 : 100}}>
               <div className = 'tt-finish-font'>Career Record:</div>
-              <div className='tt-finish-place'>{records[spot]}</div>
+              <div className='tt-finish-place'>{order[spot].record}</div>
             </div>
 
             <div className='next-words' style={{opacity: pIn ? 0 : 100}}>Next Pick:</div>
