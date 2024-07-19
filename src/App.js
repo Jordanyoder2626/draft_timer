@@ -72,12 +72,13 @@ function App(){
       return () => {
         document.removeEventListener('keydown', keyDownHandler);
       };
-    }, [inProgress, isActive, pIn, seconds, move, toggle, reset]);
+    }, [inProgress, isActive, pIn, seconds, move]);
 
 
   useEffect(() => {
     let interval = null;
     setSpot(Math.abs(-11*(round%2) + 11 - pick)-1);
+    
     if (isActive) {
       interval = setInterval(() => {
         if(seconds < 150){
@@ -146,7 +147,6 @@ function App(){
       setPIn(true);
       setMove(false);
     }
-
     setIsActive(!isActive);
   }
 
@@ -158,10 +158,11 @@ function App(){
     setIsActive(true);
   }
 
+  const nflAudio = new Audio(nfl);
   const startDraft = () => {
     
     setInProgress(true);
-    new Audio(nfl).play();
+    nflAudio.play();
 
   }
 
