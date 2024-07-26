@@ -23,7 +23,7 @@ import fants from './logos/levis.png'
 
 
 function App(){
-  const [seconds, setSeconds] = useState(120);
+  const [seconds, setSeconds] = useState(90);
   const [isActive, setIsActive] = useState(false);
   const [pick, setPick] = useState(1);
   const [round, setRound] = useState(1);
@@ -40,6 +40,7 @@ function App(){
 
   useEffect(() => {
       const keyDownHandler = event => {
+        console.log(event);
         if(event.key === 'Enter' && !inProgress){
           event.preventDefault();
           startDraft();
@@ -154,7 +155,7 @@ function App(){
     
     increasePick()
     setPIn(false);
-    setSeconds(120);
+    setSeconds(90);
     setIsActive(true);
   }
 
@@ -168,7 +169,7 @@ function App(){
 
   const backOne = (event) => {
     setPIn(false);
-    setSeconds(120);
+    setSeconds(90);
     setIsActive(true);
     decreasePick();
   }
