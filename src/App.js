@@ -5,6 +5,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import chime from './nfl-draft-chime.mp3';
 import nfl from './nfl-theme-song.mp3';
+import countdown from './countdown.mp3';
 import Modal from './Modal';
 
 import dak from './logos/dak.jpg'
@@ -36,7 +37,7 @@ function App(){
   const [inProgress, setInProgress] = React.useState(false);
   const [move, setMove] = React.useState(true);
   const [spot, setSpot] = React.useState(1);
-
+  const cd = new Audio(countdown);
   
 
 
@@ -88,7 +89,11 @@ function App(){
           setMove(true);
         }
         if(pIn){
+          cd.pause();
           setMove(false);
+        }
+        if(seconds==12){
+          cd.play();
         }
 
         if(seconds > 0){
@@ -145,7 +150,7 @@ function App(){
 
 
   function toggle() {
-    if(isActive){
+    if(isActive){ 
       sound();
       setPIn(true);
       setMove(false);
@@ -160,7 +165,7 @@ function App(){
     setSeconds(tpp);
     setIsActive(true);
   }
-
+  
   const nflAudio = new Audio(nfl);
   const startDraft = () => {
     
