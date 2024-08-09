@@ -5,7 +5,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import chime from './nfl-draft-chime.mp3';
 import nfl from './nfl-theme-song.mp3';
-import Modal from './Modal'
+import Modal from './Modal';
 
 import dak from './logos/dak.jpg'
 import dirk from './logos/dirk.jpg'
@@ -23,7 +23,8 @@ import fants from './logos/levis.png'
 
 
 function App(){
-  const [seconds, setSeconds] = useState(90);
+  const tpp = 90;
+  const [seconds, setSeconds] = useState(tpp);
   const [isActive, setIsActive] = useState(false);
   const [pick, setPick] = useState(1);
   const [round, setRound] = useState(1);
@@ -36,6 +37,7 @@ function App(){
   const [move, setMove] = React.useState(true);
   const [spot, setSpot] = React.useState(1);
 
+  
 
 
   useEffect(() => {
@@ -155,7 +157,7 @@ function App(){
     
     increasePick()
     setPIn(false);
-    setSeconds(90);
+    setSeconds(tpp);
     setIsActive(true);
   }
 
@@ -169,7 +171,7 @@ function App(){
 
   const backOne = (event) => {
     setPIn(false);
-    setSeconds(90);
+    setSeconds(tpp);
     setIsActive(true);
     decreasePick();
   }
@@ -196,7 +198,7 @@ function App(){
   const lb = new Team("Mighty Acorns", dirk, 5, "th", "39-36");
   const jy = new Team("The Warriors", warrior, 3, "rd", "46-29");
   const qm = new Team("Dak and Yellow", dak, 6, "th", "30-45");
-  const cb = new Team("Gustavo's Rocks", gustavo, 2, "nd", "43-32");
+  const cb = new Team("Gustavo's Revenge", gustavo, 2, "nd", "43-32");
   const tw = new Team("Xynh", hurts, 8, "th", "31-44");
   const rm = new Team("Levis' losers", fants, 9, "th", "39-36");
   const ld = new Team("The Rising Phoenix", phoenix, 7, "th", "36-38-1" )
@@ -210,9 +212,13 @@ function App(){
       {!inProgress ?(
         <div className="App">
           <header className="App-header">
+          < p className='welcome'>
+          Welcome to the 2024-2025 BML Draft
+            </p>
             <img src={bmldraft} className="App-logo" alt="logo" />
-            <p>
-              Welcome to the 2024-2025 BML Draft
+            
+            <p className='year'>
+              YEAR 7
             </p>
             <button className="button" onClick={startDraft} style={{width: '20vw', height: '10vh', fontSize: '25px'}}>Start Draft</button>
           </header>
