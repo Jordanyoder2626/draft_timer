@@ -11,12 +11,12 @@ import Modal from './Modal';
 import dak from './logos/dak.jpg'
 import dirk from './logos/dirk.jpg'
 import gustavo from './logos/gustavo.svg'
-import hurts from './logos/hurts.jpg'
+import hurts from './logos/hurts.png'
 import lamario from './logos/lamario.jpg'
 import leighton from './logos/leighton.jpg'
-import peen from './logos/peen.png'
+import peen from './logos/peen.svg'
 import phoenix from './logos/phoenix.jpg'
-import warrior from './logos/warrior.jpg'
+import warrior from './logos/warrior.svg'
 import fants from './logos/levis.png'
 
 
@@ -197,16 +197,16 @@ function App(){
     this.ending = ending;
     this.record = record;
   }
-  const la = new Team("Kitty's Revenge", leighton, 1, "st", "27-47-1");
+  const la = new Team("Kitty's Reign", leighton, 1, "st", "27-47-1");
   const cs = new Team("Lamario", lamario, 4, "th", "42-32");
-  const cy = new Team("Not Last", peen, "Last", "", "40-35");
+  const cy = new Team("Bootyman", peen, "Last", "", "40-35");
   const lb = new Team("Mighty Acorns", dirk, 5, "th", "39-36");
   const jy = new Team("The Warriors", warrior, 3, "rd", "46-29");
   const qm = new Team("Dak and Yellow", dak, 6, "th", "30-45");
   const cb = new Team("Gustavo's Revenge", gustavo, 2, "nd", "43-32");
-  const tw = new Team("Xynh", hurts, 8, "th", "31-44");
+  const tw = new Team("Xazavian", hurts, 8, "th", "31-44");
   const rm = new Team("Levis' losers", fants, 9, "th", "39-36");
-  const ld = new Team("The Rising Phoenix", phoenix, 7, "th", "36-38-1" )
+  const ld = new Team("Droupymagic", phoenix, 7, "th", "36-38-1" )
 
   const order = [la, cs, cy, lb, jy, qm, cb, tw, rm, ld];
   
