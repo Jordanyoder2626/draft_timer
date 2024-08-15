@@ -24,7 +24,7 @@ import fants from './logos/levis.png'
 
 
 function App(){
-  const tpp = 90;
+  const tpp = 90 ;
   const [seconds, setSeconds] = useState(tpp);
   const [isActive, setIsActive] = useState(false);
   const [pick, setPick] = useState(1);
@@ -225,7 +225,8 @@ function App(){
             <p className='year'>
               YEAR 7
             </p>
-            <button className="button" onClick={startDraft} style={{width: '20vw', height: '10vh', fontSize: '25px'}}>Start Draft</button>
+            {/*<button className="button" onClick={startDraft} style={{width: '20vw', height: '10vh', fontSize: '25px'}}>Start Draft</button>
+            */}          
           </header>
           
         </div>
