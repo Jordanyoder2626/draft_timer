@@ -14,7 +14,7 @@ import gustavo from './logos/gustavo.svg'
 import hurts from './logos/hurts.png'
 import lamario from './logos/lamario.jpg'
 import leighton from './logos/leighton.jpg'
-import peen from './logos/peen.jpg'
+import pen from './logos/pen.jpg'
 import phoenix from './logos/phoenix.jpg'
 import warrior from './logos/warrior.svg'
 import fants from './logos/levis.png'
@@ -199,7 +199,7 @@ function App(){
   }
   const la = new Team("Kitty's Reign", leighton, 1, "st", "27-47-1");
   const cs = new Team("Lamario", lamario, 4, "th", "42-32");
-  const cy = new Team("Bootyman", peen, "Last", "", "40-35");
+  const cy = new Team("Man", pen, "Last", "", "40-35");
   const lb = new Team("Mighty Acorns", dirk, 5, "th", "39-36");
   const jy = new Team("The Warriors", warrior, 3, "rd", "46-29");
   const qm = new Team("Dak and Yellow", dak, 6, "th", "30-45");
