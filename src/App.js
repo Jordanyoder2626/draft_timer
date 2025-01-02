@@ -14,7 +14,7 @@ import gustavo from './logos/gustavo.svg'
 import hurts from './logos/hurts.png'
 import lamario from './logos/lamario.jpg'
 import leighton from './logos/leighton.jpg'
-import peen from './logos/peen.svg'
+import peen from './logos/peen.jpg'
 import phoenix from './logos/phoenix.jpg'
 import warrior from './logos/warrior.svg'
 import fants from './logos/levis.png'
@@ -92,7 +92,7 @@ function App(){
           cd.pause();
           setMove(false);
         }
-        if(seconds==12){
+        if(seconds===12){
           cd.play();
         }
 
@@ -208,7 +208,8 @@ function App(){
   const rm = new Team("Levis' losers", fants, 9, "th", "39-36");
   const ld = new Team("Droupymagic", phoenix, 7, "th", "36-38-1" )
 
-  const order = [la, cs, cy, lb, jy, qm, cb, tw, rm, ld];
+
+  const order = [la, qm, lb, cs, cy, jy, ld, tw, rm, cb];
   
 
 
