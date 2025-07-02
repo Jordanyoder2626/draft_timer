@@ -197,16 +197,16 @@ function App(){
     this.ending = ending;
     this.record = record;
   }
-  const la = new Team("Kitty's Reign", leighton, 1, "st", "27-47-1");
-  const cs = new Team("Lamario", lamario, 4, "th", "42-32");
-  const cy = new Team("Man", pen, "Last", "", "40-35");
-  const lb = new Team("Mighty Acorns", dirk, 5, "th", "39-36");
-  const jy = new Team("The Warriors", warrior, 3, "rd", "46-29");
-  const qm = new Team("Dak and Yellow", dak, 6, "th", "30-45");
-  const cb = new Team("Gustavo's Revenge", gustavo, 2, "nd", "43-32");
-  const tw = new Team("Xazavian", hurts, 8, "th", "31-44");
-  const rm = new Team("Levis' losers", fants, 9, "th", "39-36");
-  const ld = new Team("Droupymagic", phoenix, 7, "th", "36-38-1" )
+  const la = new Team("Kitty's Reign", leighton, 5, "th", "34-53-1");
+  const cs = new Team("Lamario", lamario, 2, "nd", "51-37");
+  const cy = new Team("Man", pen, 6, "th", "46-42");
+  const lb = new Team("Mighty Acorns", dirk, 7, "th", "45-43");
+  const jy = new Team("The Warriors", warrior, 3, "rd", "55-33");
+  const qm = new Team("Dak and Yellow", dak, 1, "st", "37-51");
+  const cb = new Team("Gustavo's Revenge", gustavo, 9, "th", "47-41");
+  const tw = new Team("Xazavian", hurts, 8, "th", "36-52");
+  const rm = new Team("Levis' losers", fants, "Last", "", "44-44");
+  const ld = new Team("Droupymagic", phoenix, 4, "th", "44-43-1" )
 
 
   const order = [la, qm, lb, cs, cy, jy, ld, tw, rm, cb];
@@ -219,12 +219,12 @@ function App(){
         <div className="App">
           <header className="App-header">
           < p className='welcome'>
-          Welcome to the 2024-2025 BML Draft
+          Welcome to the 2025-2026 BML Draft
             </p>
             <img src={bmldraft} className="App-logo" alt="logo" />
             
             <p className='year'>
-              YEAR 7
+              YEAR 8
             </p>
             {/*<button className="button" onClick={startDraft} style={{width: '20vw', height: '10vh', fontSize: '25px'}}>Start Draft</button>
             */}          
@@ -250,7 +250,7 @@ function App(){
 
 
             <div className='tt-finish' style={{opacity: pIn ? 0 : 100}}>
-              <div className = 'tt-finish-font'>2023 Finish:</div>
+              <div className = 'tt-finish-font'>2024 Finish:</div>
               <div className='tt-finish-place'>{order[spot].finish}{order[spot].ending}</div>
             </div>
 
