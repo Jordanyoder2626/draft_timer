@@ -7,11 +7,43 @@
   pointer-events: none;
   perspective: 200px;
 }
+.Sponsors{
+  position: fixed;
+  bottom: 3rem;
+  right: 2rem;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 2rem;
+  border-radius: 1rem;
+  /*box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);*/
+
+}
+.sponsors-text {
+  font-size: 3.25rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.sponsors-logos {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.sponsors-logos img {
+  height: 6rem; /* Adjust as needed */
+  width: auto;
+  object-fit: contain;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo 20s infinite;
     animation-direction: alternate;
+    animation-delay: 5s;
+  }
+  .Sponsors {
+    animation: Sponsors 50s infinite;
     animation-delay: 10s;
   }
   
@@ -44,6 +76,27 @@
   }
   100% {
     transform: rotateY(360deg);
+  }
+}
+
+@keyframes Sponsors {
+  0% {
+    opacity: 00;
+  }
+  25% {
+    opacity: 00;
+  }
+  35% {
+    opacity: 100;
+  }
+  65% {
+    opacity: 100;
+  }
+  75% {
+    opacity: 00;
+  }
+  100% {
+    opacity: 00;
   }
 }
 

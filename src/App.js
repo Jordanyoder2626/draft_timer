@@ -18,6 +18,10 @@ import pen from './logos/pen.jpg'
 import phoenix from './logos/phoenix.jpg'
 import warrior from './logos/warrior.svg'
 import fants from './logos/levis.png'
+import jordan from './logos/jordan.png'
+import fw from './logos/firewheel.png'
+import imp from './logos/imp.png'
+import dh from './logos/dh.png'
 
 
 
@@ -202,10 +206,10 @@ function App(){
   const cy = new Team("Man", pen, 6, "th", "46-42");
   const lb = new Team("Mighty Acorns", dirk, 7, "th", "45-43");
   const jy = new Team("The Warriors", warrior, 3, "rd", "55-33");
-  const qm = new Team("Dak and Yellow", dak, 1, "st", "37-51");
+  const qm = new Team("The Champ", dak, 1, "st", "37-51");
   const cb = new Team("Gustavo's Revenge", gustavo, 9, "th", "47-41");
   const tw = new Team("Xazavian", hurts, 8, "th", "36-52");
-  const rm = new Team("Levis' losers", fants, "Last", "", "44-44");
+  const rm = new Team("Gruden Grinders", fants, "Last", "", "44-44");
   const ld = new Team("Droupymagic", phoenix, 4, "th", "44-43-1" )
 
 
@@ -225,7 +229,17 @@ function App(){
             
             <p className='year'>
               YEAR 8
+              <div className = 'Sponsors'>
+              <p className='sponsors-text'>Thank You to our Sponsors:</p>
+                <div className='sponsors-logos'>
+                  <img src={imp}  />
+                  <img src={dh}  />
+                  <img src={fw} />
+                  <img src={jordan} />
+                </div>
+              </div>
             </p>
+            
             {/*<button className="button" onClick={startDraft} style={{width: '20vw', height: '10vh', fontSize: '25px'}}>Start Draft</button>
             */}          
           </header>
