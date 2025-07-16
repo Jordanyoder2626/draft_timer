@@ -1,11 +1,37 @@
 .App {
   text-align: center;
 }
-
+.App-logo-wrapper {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  mask-image: var(--mask-url);
+  -webkit-mask-image: var(--mask-url);
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  mask-position: center;
+}
 .App-logo {
   height: 65vmin;
+  width: 100%;
+  
+  display: block;
+  /*perspective: 200px;*/
+}
+.shimmer-overlay {
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 30%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  animation: App-logo 4s infinite;
   pointer-events: none;
-  perspective: 200px;
 }
 .Sponsors{
   position: fixed;
@@ -37,11 +63,11 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
+  /*.App-logo {
     animation: App-logo 20s infinite;
     animation-direction: alternate;
     animation-delay: 5s;
-  }
+  }*/
   .Sponsors {
     animation: Sponsors 50s infinite;
     animation-delay: 10s;
@@ -72,11 +98,17 @@
 
 @keyframes App-logo {
   0% {
+    left: -150%;
+  }
+  100% {
+    left: 150%;
+  }/*
+  0% {
     transform: rotateY(0deg);
   }
   100% {
     transform: rotateY(360deg);
-  }
+  }*/
 }
 
 @keyframes Sponsors {

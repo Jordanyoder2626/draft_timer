@@ -225,7 +225,10 @@ function App(){
           < p className='welcome'>
           Welcome to the 2025-2026 BML Draft
             </p>
-            <img src={bmldraft} className="App-logo" alt="logo" />
+            <div className='App-logo-wrapper'style={{ '--mask-url': `url(${bmldraft})` }}>
+              <img src={bmldraft} className="App-logo" alt="logo" />
+              <div className='shimmer-overlay'></div>
+            </div>
             
             <p className='year'>
               YEAR 8
