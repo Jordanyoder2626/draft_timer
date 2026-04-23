@@ -17,7 +17,7 @@ import leighton from './logos/leighton.jpg'
 import pen from './logos/pen.jpg'
 import phoenix from './logos/phoenix.jpg'
 import warrior from './logos/warrior.svg'
-import fants from './logos/levis.png'
+import fants from './logos/levis.jpg'
 import jordan from './logos/jordan.png'
 import fw from './logos/firewheel.png'
 import imp from './logos/imp.png'
@@ -202,18 +202,17 @@ function App(){
     this.record = record;
   }
   const la = new Team("Kitty's Reign", leighton, 5, "th", "34-53-1");
-  const cs = new Team("Lamario", lamario, 2, "nd", "51-37");
-  const cy = new Team("Man", pen, 6, "th", "46-42");
+  const cs = new Team("The -ario Franchise", lamario, 2, "nd", "51-37");
+  const cy = new Team("Moose Knuckles", pen, 6, "th", "46-42");
   const lb = new Team("Mighty Acorns", dirk, 7, "th", "45-43");
   const jy = new Team("The Warriors", warrior, 3, "rd", "55-33");
   const qm = new Team("The Champ", dak, 1, "st", "37-51");
-  const cb = new Team("Gustavo's Revenge", gustavo, 9, "th", "47-41");
-  const tw = new Team("Xazavian", hurts, 8, "th", "36-52");
+  const cb = new Team("Gustavo", gustavo, 9, "th", "47-41");
+  const tw = new Team("Michael Obama", hurts, 8, "th", "36-52");
   const rm = new Team("Gruden Grinders", fants, "Last", "", "44-44");
   const ld = new Team("Droupymagic", phoenix, 4, "th", "44-43-1" )
 
-
-  const order = [la, qm, lb, cs, cy, jy, ld, tw, rm, cb];
+  const order = [jy, cs, la, rm,ld,lb,cy,qm,tw,cb]
   
 
 
