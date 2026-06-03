@@ -8,20 +8,20 @@ import chime from './nfl-draft-chime.mp3';
 import countdown from './countdown.mp3';
 import nfl from './nfl-theme-song.mp3';
 
+import claude from './logos/claude.png';
 import dak from './logos/dak.jpg';
 import dirk from './logos/dirk.jpg';
-import dh from './logos/dh.png';
+import drP from './logos/drP.png';
 import fants from './logos/levis.jpg';
 import fw from './logos/firewheel.png';
 import gustavo from './logos/gustavo.svg';
 import hurts from './logos/hurts.png';
-import imp from './logos/imp.png';
-import jordan from './logos/jordan.png';
 import lamario from './logos/lamario.jpg';
 import lamario2 from './logos/lamario2.jpg';
 import leighton from './logos/leighton.jpg';
 import pen from './logos/pen.jpg';
 import phoenix from './logos/phoenix.jpg';
+import sonic from './logos/sonic.svg';
 import stormforce from './logos/stormforce.jpg';
 import warrior from './logos/warrior.svg';
 
@@ -154,11 +154,11 @@ const saveDraftOrder = (teams) => {
 };
 
 const sponsorLogos = [
-  { src: imp, alt: 'Imperial sponsor logo' },
-  { src: dh, alt: 'DH sponsor logo' },
-  { src: fw, alt: 'Firewheel sponsor logo' },
-  { src: jordan, alt: 'Jordan sponsor logo' },
-  { src: stormforce, alt: 'Stormforce sponsor logo' },
+  { src: fw, alt: 'Firewheel sponsor logo', className: 'sponsor-logo-firewheel' },
+  { src: claude, alt: 'Claude sponsor logo', className: 'sponsor-logo-claude' },
+  { src: sonic, alt: 'Sonic sponsor logo', className: 'sponsor-logo-sonic' },
+  { src: drP, alt: 'DrP sponsor logo', className: 'sponsor-logo-drp' },
+  { src: stormforce, alt: 'Stormforce sponsor logo', className: 'sponsor-logo-stormforce' },
 ];
 
 const getDraftOrderIndexForPick = (round, pick) => {
@@ -339,7 +339,12 @@ function WelcomeRoute({ onOpenDraftOrder, onStartDraft }) {
             <p className="sponsors-text">Thank You to our Sponsors:</p>
             <div className="sponsors-logos">
               {sponsorLogos.map((logo) => (
-                <img key={logo.alt} src={logo.src} alt={logo.alt} />
+                <img
+                  key={logo.alt}
+                  className={`sponsor-logo ${logo.className}`}
+                  src={logo.src}
+                  alt={logo.alt}
+                />
               ))}
             </div>
           </div>
