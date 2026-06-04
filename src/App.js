@@ -203,7 +203,28 @@ const getTeamForPick = (draftOrder, round, pick) => {
   };
 };
 
-const getRoute = () => window.location.pathname;
+const DRAFT_ROUTE = '/draft';
+
+const getBasePath = () => {
+  const currentPath = window.location.pathname.replace(/\/$/, '');
+
+  if (currentPath.endsWith(DRAFT_ROUTE)) {
+    return currentPath.slice(0, -DRAFT_ROUTE.length);
+  }
+
+  return currentPath === '' ? '' : currentPath;
+};
+
+const getRoute = () => {
+  const basePath = getBasePath();
+  const currentPath = window.location.pathname;
+  const routePath =
+    basePath && currentPath.startsWith(basePath)
+      ? currentPath.slice(basePath.length) || '/'
+      : currentPath;
+
+  return routePath === DRAFT_ROUTE ? DRAFT_ROUTE : '/';
+};
 
 const normalizeTeamName = (name) =>
   String(name || '')
@@ -767,7 +788,7 @@ function App() {
   }, []);
 
   const navigate = useCallback((path) => {
-    window.history.pushState(null, '', path);
+    window.history.pushState(null, '', `${getBasePath()}${path}`);
     setRoute(path);
   }, []);
 

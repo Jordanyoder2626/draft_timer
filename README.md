@@ -17,6 +17,13 @@ npm install
 npm start
 ```
 
+##### To rebuild the GitHub Pages docs folder after making changes
+```
+npm run build:docs
+```
+
+##### Then commit and push the updated `docs/` folder. GitHub Pages should be set to publish from the `/docs` folder on your branch.
+
 ## How to edit
 ##### Add in images to the logos folder and import images desired for each team
 ##### Edit teams and logos arrays to draft order
