@@ -28,6 +28,11 @@ import warrior from './logos/warrior.svg';
 const TIME_PER_PICK = 90;
 const TEAMS_PER_ROUND = 10;
 const MAX_ROUNDS = 16;
+const PICK_EXIT_DURATION_MS = 700;
+const NEXT_PICK_ENTER_DURATION_MS = 1100;
+const DRAFT_INTRO_DURATION_MS = 30500;
+const DRAFT_INTRO_ROUTE_DELAY_MS = DRAFT_INTRO_DURATION_MS - 3000;
+const AUDIO_FADE_OUT_MS = 3000;
 
 const DRAFT_ORDER_STORAGE_KEY = 'bmlDraftOrder';
 
@@ -354,6 +359,74 @@ function WelcomeRoute({ onOpenDraftOrder, onStartDraft }) {
   );
 }
 
+function DraftIntroTransition({ teams }) {
+  const featuredTeams = teams.slice(0, 10);
+  const nutCupWinner = teams.find((team) => team.finish === 1) || teams[0];
+  const bootymanWinner =
+    teams.find((team) => team.finish === TEAMS_PER_ROUND) || teams[teams.length - 1];
+
+  return (
+    <div className="draft-intro-transition" aria-live="polite">
+      <div className="draft-intro-grid" />
+      <div className="draft-intro-band draft-intro-band-top" />
+      <div className="draft-intro-band draft-intro-band-bottom" />
+
+      <div className="draft-intro-opening">
+        <div className="draft-intro-logo-stack">
+          <img src={bml} className="draft-intro-bml-logo" alt="BML logo" />
+          <img src={bmldraft} className="draft-intro-draft-logo" alt="BML draft logo" />
+        </div>
+
+        <div className="draft-intro-copy">
+          <div className="draft-intro-kicker">Live From Draft Night</div>
+          <div className="draft-intro-title">BML Draft</div>
+          <div className="draft-intro-subtitle">Year 9 - Round 1 Begins Now</div>
+        </div>
+      </div>
+
+      <div className="draft-intro-awards">
+        <div className="draft-intro-section-title">Last Season's Hardware</div>
+        <div className="draft-intro-award-grid">
+          <div className="draft-intro-award draft-intro-award-champ">
+            <div className="draft-intro-award-label">2025 Nut Cup Winner</div>
+            <img src={nutCupWinner.logo} alt="" />
+            <div className="draft-intro-award-name">{nutCupWinner.name}</div>
+          </div>
+          <div className="draft-intro-award draft-intro-award-booty">
+            <div className="draft-intro-award-label">2025 Bootyman Winner</div>
+            <img src={bootymanWinner.logo} alt="" />
+            <div className="draft-intro-award-name">{bootymanWinner.name}</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="draft-intro-order">
+        <div className="draft-intro-order-title">Draft Order</div>
+        <ol className="draft-intro-order-list">
+          {teams.slice(0, TEAMS_PER_ROUND).map((team, index) => (
+            <li className="draft-intro-order-team" key={team.id}>
+              <span>{index + 1}</span>
+              <img src={team.logo} alt="" />
+              <strong>{team.name}</strong>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <div className="draft-intro-team-track" aria-hidden="true">
+        {featuredTeams.map((team, index) => (
+          <img
+            key={`${team.id}-${index}`}
+            className="draft-intro-team-logo"
+            src={team.logo}
+            alt=""
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function DraftRoute({
   backOne,
   currentTeam,
@@ -364,7 +437,9 @@ function DraftRoute({
   onKeyboardNextPick,
   onOpenDraftOrder,
   pick,
+  pickIsAdvancing,
   pickIsIn,
+  nextPickIsEntering,
   reset,
   round,
   toggle,
@@ -444,7 +519,11 @@ function DraftRoute({
 
   return (
     <div className="timer">
-      <header className="timer-header" style={{ backgroundColor: pickIsIn ? 'black' : null }}>
+      <header
+        className={`timer-header ${pickIsIn ? 'timer-header-pick-is-in' : ''} ${
+          nextPickIsEntering ? 'timer-header-next-pick-entering' : ''
+        }`}
+      >
         <div className="words" style={{ opacity: pickIsIn ? 0 : 100 }}>
           <h1 className="onC">On the Clock: {currentTeam.name}</h1>
         </div>
@@ -454,7 +533,7 @@ function DraftRoute({
           src={currentTeam.logo}
           className="circle"
           alt={`${currentTeam.name} logo`}
-          style={{ scale: pickIsIn ? '1.75' : '1' }}
+          style={{ opacity: pickIsIn ? 0 : 100 }}
         />
         <img
           key={`${nextTeam.id}-${nextTeam.logo}`}
@@ -493,17 +572,30 @@ function DraftRoute({
         <div className="next-words" style={{ opacity: pickIsIn ? 0 : 100 }}>
           Next Pick:
         </div>
-        <h1
-          className="pick-words"
-          style={{
-            opacity: pickIsIn ? 100 : 0,
-            transitionDelay: pickIsIn ? '3000ms' : '0ms',
-            transitionDuration: pickIsIn ? '3000ms' : '1000ms',
-            left: move ? '0px' : null,
-          }}
-        >
-          The Pick is In...
-        </h1>
+        {pickIsIn ? (
+          <div
+            className={`pick-is-in-transition ${
+              pickIsAdvancing ? 'pick-is-in-transition-exiting' : ''
+            }`}
+            aria-live="polite"
+          >
+            <div className="pick-transition-sweep pick-transition-sweep-top" />
+            <div className="pick-transition-sweep pick-transition-sweep-bottom" />
+            <div className="pick-transition-grid" />
+            <div className="pick-transition-logo-ring">
+              <img
+                src={currentTeam.logo}
+                className="pick-transition-logo"
+                alt={`${currentTeam.name} logo`}
+              />
+            </div>
+            <div className="pick-transition-copy">
+              <div className="pick-transition-kicker">Round {round} - Pick {pick}</div>
+              <div className="pick-transition-title">The Pick Is In</div>
+              <div className="pick-transition-team">{currentTeam.name}</div>
+            </div>
+          </div>
+        ) : null}
 
         <div className="time-group" style={{ opacity: pickIsIn ? 0 : 100 }}>
           <h2 className="time">{formattedTime}</h2>
@@ -620,13 +712,22 @@ function App() {
   const [pick, setPick] = useState(1);
   const [round, setRound] = useState(1);
   const [pickIsIn, setPickIsIn] = useState(false);
+  const [pickIsAdvancing, setPickIsAdvancing] = useState(false);
+  const [nextPickIsEntering, setNextPickIsEntering] = useState(false);
   const [move, setMove] = useState(true);
   const [draftOrder, setDraftOrder] = useState(getSavedDraftOrder);
   const [draftOrderEditorIsOpen, setDraftOrderEditorIsOpen] = useState(false);
+  const [draftIntroIsRunning, setDraftIntroIsRunning] = useState(false);
 
   const countdownAudioRef = useRef(null);
   const nflAudioRef = useRef(null);
   const chimeAudioRef = useRef(null);
+  const pickAdvanceTimeoutRef = useRef(null);
+  const nextPickEnterTimeoutRef = useRef(null);
+  const draftIntroTimeoutRef = useRef(null);
+  const draftIntroUnmountTimeoutRef = useRef(null);
+  const draftIntroAudioFadeTimeoutRef = useRef(null);
+  const audioFadeIntervalRef = useRef(null);
 
   const currentTeam = useMemo(
     () => getTeamForPick(draftOrder, round, pick),
@@ -642,6 +743,15 @@ function App() {
     countdownAudioRef.current = new Audio(countdown);
     nflAudioRef.current = new Audio(nfl);
     chimeAudioRef.current = new Audio(chime);
+  }, []);
+
+  useEffect(() => () => {
+    clearTimeout(pickAdvanceTimeoutRef.current);
+    clearTimeout(nextPickEnterTimeoutRef.current);
+    clearTimeout(draftIntroTimeoutRef.current);
+    clearTimeout(draftIntroUnmountTimeoutRef.current);
+    clearTimeout(draftIntroAudioFadeTimeoutRef.current);
+    clearInterval(audioFadeIntervalRef.current);
   }, []);
 
   useEffect(() => {
@@ -661,27 +771,79 @@ function App() {
     setRoute(path);
   }, []);
 
-  const playChime = useCallback(() => {
-    const chimeAudio = chimeAudioRef.current;
+  const stopAudio = useCallback((audioRef) => {
+    const audio = audioRef.current;
 
-    if (!chimeAudio) {
+    if (!audio) {
       return;
     }
 
-    chimeAudio.currentTime = 0;
-    chimeAudio.play();
+    audio.pause();
+    audio.currentTime = 0;
+    audio.volume = 1;
   }, []);
+
+  const fadeOutAudio = useCallback((audioRef, duration = AUDIO_FADE_OUT_MS) => {
+    const audio = audioRef.current;
+
+    if (!audio || audio.paused) {
+      return;
+    }
+
+    clearInterval(audioFadeIntervalRef.current);
+
+    const startingVolume = audio.volume || 1;
+    const fadeStartedAt = Date.now();
+
+    audioFadeIntervalRef.current = setInterval(() => {
+      const elapsed = Date.now() - fadeStartedAt;
+      const progress = Math.min(elapsed / duration, 1);
+
+      audio.volume = Math.max(startingVolume * (1 - progress), 0);
+
+      if (progress >= 1) {
+        clearInterval(audioFadeIntervalRef.current);
+        audio.pause();
+        audio.currentTime = 0;
+        audio.volume = 1;
+      }
+    }, 50);
+  }, []);
+
+  const stopAllAudioExcept = useCallback((activeAudioRef) => {
+    [countdownAudioRef, nflAudioRef, chimeAudioRef].forEach((audioRef) => {
+      if (audioRef !== activeAudioRef) {
+        if (audioRef === nflAudioRef) {
+          fadeOutAudio(audioRef);
+          return;
+        }
+
+        stopAudio(audioRef);
+      }
+    });
+  }, [fadeOutAudio, stopAudio]);
+
+  const playAudio = useCallback((audioRef) => {
+    const audio = audioRef.current;
+
+    if (!audio) {
+      return;
+    }
+
+    clearInterval(audioFadeIntervalRef.current);
+    stopAllAudioExcept(audioRef);
+    audio.volume = 1;
+    audio.currentTime = 0;
+    audio.play();
+  }, [stopAllAudioExcept]);
+
+  const playChime = useCallback(() => {
+    playAudio(chimeAudioRef);
+  }, [playAudio]);
 
   const resetCountdownAudio = useCallback(() => {
-    const countdownAudio = countdownAudioRef.current;
-
-    if (!countdownAudio) {
-      return;
-    }
-
-    countdownAudio.pause();
-    countdownAudio.currentTime = 0;
-  }, []);
+    stopAudio(countdownAudioRef);
+  }, [stopAudio]);
 
   const increasePick = useCallback(() => {
     if (pick >= TEAMS_PER_ROUND && round >= MAX_ROUNDS) {
@@ -711,17 +873,45 @@ function App() {
     setPick((currentPick) => currentPick - 1);
   }, [pick, round]);
 
-  const reset = useCallback(() => {
+  const completePickAdvance = useCallback(() => {
     increasePick();
     resetCountdownAudio();
     setPickIsIn(false);
+    setPickIsAdvancing(false);
     setSeconds(TIME_PER_PICK);
     setIsActive(true);
+    setNextPickIsEntering(true);
+
+    clearTimeout(nextPickEnterTimeoutRef.current);
+    nextPickEnterTimeoutRef.current = setTimeout(() => {
+      setNextPickIsEntering(false);
+    }, NEXT_PICK_ENTER_DURATION_MS);
   }, [increasePick, resetCountdownAudio]);
+
+  const reset = useCallback(() => {
+    if (pickIsAdvancing) {
+      return;
+    }
+
+    clearTimeout(pickAdvanceTimeoutRef.current);
+    clearTimeout(nextPickEnterTimeoutRef.current);
+
+    if (!pickIsIn) {
+      completePickAdvance();
+      return;
+    }
+
+    setPickIsAdvancing(true);
+    pickAdvanceTimeoutRef.current = setTimeout(() => {
+      completePickAdvance();
+    }, PICK_EXIT_DURATION_MS);
+  }, [completePickAdvance, pickIsAdvancing, pickIsIn]);
 
   const toggle = useCallback(() => {
     setIsActive((currentIsActive) => {
       if (currentIsActive) {
+        clearTimeout(nextPickEnterTimeoutRef.current);
+        setNextPickIsEntering(false);
         playChime();
         resetCountdownAudio();
         setPickIsIn(true);
@@ -733,12 +923,42 @@ function App() {
   }, [playChime, resetCountdownAudio]);
 
   const startDraft = useCallback(() => {
-    navigate('/draft');
-    nflAudioRef.current?.play();
-  }, [navigate]);
+    if (draftIntroIsRunning) {
+      return;
+    }
+
+    setDraftIntroIsRunning(true);
+    playAudio(nflAudioRef);
+
+    clearTimeout(draftIntroTimeoutRef.current);
+    clearTimeout(draftIntroUnmountTimeoutRef.current);
+    clearTimeout(draftIntroAudioFadeTimeoutRef.current);
+
+    draftIntroAudioFadeTimeoutRef.current = setTimeout(() => {
+      fadeOutAudio(nflAudioRef);
+    }, Math.max(DRAFT_INTRO_ROUTE_DELAY_MS - AUDIO_FADE_OUT_MS, 0));
+
+    draftIntroTimeoutRef.current = setTimeout(() => {
+      navigate('/draft');
+      setNextPickIsEntering(true);
+
+      clearTimeout(nextPickEnterTimeoutRef.current);
+      nextPickEnterTimeoutRef.current = setTimeout(() => {
+        setNextPickIsEntering(false);
+      }, NEXT_PICK_ENTER_DURATION_MS);
+
+      draftIntroUnmountTimeoutRef.current = setTimeout(() => {
+        setDraftIntroIsRunning(false);
+      }, DRAFT_INTRO_DURATION_MS - DRAFT_INTRO_ROUTE_DELAY_MS);
+    }, DRAFT_INTRO_ROUTE_DELAY_MS);
+  }, [draftIntroIsRunning, fadeOutAudio, navigate, playAudio]);
 
   const backOne = useCallback(() => {
+    clearTimeout(pickAdvanceTimeoutRef.current);
+    clearTimeout(nextPickEnterTimeoutRef.current);
     setPickIsIn(false);
+    setPickIsAdvancing(false);
+    setNextPickIsEntering(false);
     setSeconds(TIME_PER_PICK);
     setIsActive(true);
     decreasePick();
@@ -780,12 +1000,7 @@ function App() {
         }
 
         if (currentSeconds === 12) {
-          const countdownAudio = countdownAudioRef.current;
-
-          if (countdownAudio) {
-            countdownAudio.currentTime = 0;
-            countdownAudio.play();
-          }
+          playAudio(countdownAudioRef);
         }
 
         if (currentSeconds > 0) {
@@ -804,7 +1019,7 @@ function App() {
     return () => {
       clearInterval(timer);
     };
-  }, [isActive, pickIsIn, playChime, resetCountdownAudio]);
+  }, [isActive, pickIsIn, playAudio, playChime, resetCountdownAudio]);
 
   const formattedTime = useMemo(() => {
     const minutes = Math.floor(seconds / 60);
@@ -813,38 +1028,32 @@ function App() {
     return `${minutes}:${remainingSeconds}`;
   }, [seconds]);
 
-  if (route === '/draft') {
-    return (
-      <>
-        <DraftRoute
-          backOne={backOne}
-          currentTeam={currentTeam}
-          formattedTime={formattedTime}
-          isActive={isActive}
-          move={move}
-          nextTeam={nextTeam}
-          onKeyboardNextPick={keyboardNextPick}
-          onOpenDraftOrder={openDraftOrderEditor}
-          pick={pick}
-          pickIsIn={pickIsIn}
-          reset={reset}
-          round={round}
-          toggle={toggle}
-        />
-        {draftOrderEditorIsOpen ? (
-          <DraftOrderEditor
-            draftOrder={draftOrder}
-            onCancel={closeDraftOrderEditor}
-            onSave={handleSaveDraftOrder}
-          />
-        ) : null}
-      </>
-    );
-  }
+  const routeContent = route === '/draft' ? (
+    <DraftRoute
+      backOne={backOne}
+      currentTeam={currentTeam}
+      formattedTime={formattedTime}
+      isActive={isActive}
+      move={move}
+      nextTeam={nextTeam}
+      onKeyboardNextPick={keyboardNextPick}
+      onOpenDraftOrder={openDraftOrderEditor}
+      pick={pick}
+      pickIsAdvancing={pickIsAdvancing}
+      pickIsIn={pickIsIn}
+      nextPickIsEntering={nextPickIsEntering}
+      reset={reset}
+      round={round}
+      toggle={toggle}
+    />
+  ) : (
+    <WelcomeRoute onOpenDraftOrder={openDraftOrderEditor} onStartDraft={startDraft} />
+  );
 
   return (
     <>
-      <WelcomeRoute onOpenDraftOrder={openDraftOrderEditor} onStartDraft={startDraft} />
+      {routeContent}
+      {draftIntroIsRunning ? <DraftIntroTransition teams={draftOrder} /> : null}
       {draftOrderEditorIsOpen ? (
         <DraftOrderEditor
           draftOrder={draftOrder}
