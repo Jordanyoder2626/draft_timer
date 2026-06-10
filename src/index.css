@@ -5,6 +5,11 @@ body,
   width: 100%;
 }
 
+html {
+  font-size: 1.4815vmin;
+  --px: 0.0926vmin;
+}
+
 body {
   margin: 0;
   overflow: hidden;
