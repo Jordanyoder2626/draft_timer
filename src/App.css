@@ -164,6 +164,7 @@
   line-height: 1;
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   position: relative;
+  z-index: 1;
   text-shadow: 0 9px 24px rgba(0, 0, 0, 0.34);
 }      
 .welcome{
