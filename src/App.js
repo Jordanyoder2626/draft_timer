@@ -35,6 +35,7 @@ const DRAFT_INTRO_ROUTE_DELAY_MS = DRAFT_INTRO_DURATION_MS - 3000;
 const AUDIO_FADE_OUT_MS = 3000;
 
 const DRAFT_ORDER_STORAGE_KEY = 'bmlDraftOrder';
+const DRAFT_TEAM_NAMES_STORAGE_KEY = 'bmlDraftTeamNames';
 
 const initialDraftOrder = [
   {
@@ -133,17 +134,32 @@ const initialDraftOrder = [
 const getSavedDraftOrder = () => {
   try {
     const savedOrder = JSON.parse(window.localStorage.getItem(DRAFT_ORDER_STORAGE_KEY));
+    const savedTeamNames = JSON.parse(
+      window.localStorage.getItem(DRAFT_TEAM_NAMES_STORAGE_KEY)
+    );
+    const teamNameById =
+      savedTeamNames && typeof savedTeamNames === 'object' && !Array.isArray(savedTeamNames)
+        ? savedTeamNames
+        : {};
+    const withSavedName = (team) => ({
+      ...team,
+      name: typeof teamNameById[team.id] === 'string' && teamNameById[team.id].trim()
+        ? teamNameById[team.id].trim()
+        : team.name,
+    });
 
     if (!Array.isArray(savedOrder)) {
-      return initialDraftOrder;
+      return initialDraftOrder.map(withSavedName);
     }
 
-    const teamsById = new Map(initialDraftOrder.map((team) => [team.id, team]));
+    const teamsById = new Map(initialDraftOrder.map((team) => [team.id, withSavedName(team)]));
     const orderedTeams = savedOrder
       .map((teamId) => teamsById.get(teamId))
       .filter(Boolean);
     const savedTeamIds = new Set(orderedTeams.map((team) => team.id));
-    const missingTeams = initialDraftOrder.filter((team) => !savedTeamIds.has(team.id));
+    const missingTeams = initialDraftOrder
+      .filter((team) => !savedTeamIds.has(team.id))
+      .map(withSavedName);
 
     return [...orderedTeams, ...missingTeams];
   } catch {
@@ -155,6 +171,14 @@ const saveDraftOrder = (teams) => {
   window.localStorage.setItem(
     DRAFT_ORDER_STORAGE_KEY,
     JSON.stringify(teams.map((team) => team.id))
+  );
+  window.localStorage.setItem(
+    DRAFT_TEAM_NAMES_STORAGE_KEY,
+    JSON.stringify(
+      Object.fromEntries(
+        teams.map((team) => [team.id, String(team.name || '').trim()])
+      )
+    )
   );
 };
 
@@ -326,10 +350,14 @@ const getRandomNoteIndex = (notes) => {
   return Math.floor(Math.random() * notes.length);
 };
 
-function WelcomeRoute({ onOpenDraftOrder, onStartDraft }) {
+function WelcomeRoute({ keyboardIsDisabled, onOpenDraftOrder, onStartDraft }) {
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key.startsWith('Arrow')) {
+      if (keyboardIsDisabled) {
+        return;
+      }
+
+      if (['ArrowUp', 'ArrowDown'].includes(event.key)) {
         event.preventDefault();
         onOpenDraftOrder();
         return;
@@ -348,7 +376,7 @@ function WelcomeRoute({ onOpenDraftOrder, onStartDraft }) {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [onOpenDraftOrder, onStartDraft]);
+  }, [keyboardIsDisabled, onOpenDraftOrder, onStartDraft]);
 
   return (
     <div className="App">
@@ -452,8 +480,7 @@ function DraftRoute({
   backOne,
   currentTeam,
   formattedTime,
-  isActive,
-  move,
+  keyboardIsDisabled,
   nextTeam,
   onKeyboardNextPick,
   onOpenDraftOrder,
@@ -461,7 +488,6 @@ function DraftRoute({
   pickIsAdvancing,
   pickIsIn,
   nextPickIsEntering,
-  reset,
   round,
   toggle,
 }) {
@@ -501,8 +527,21 @@ function DraftRoute({
   }, [teamNotes]);
 
   useEffect(() => {
+    const handlePickAction = () => {
+      if (!pickIsIn) {
+        toggle();
+        return;
+      }
+
+      onKeyboardNextPick();
+    };
+
     const handleKeyDown = (event) => {
-      if (event.key !== ' ') {
+      if (keyboardIsDisabled) {
+        return;
+      }
+
+      if (![' ', 'ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
         return;
       }
 
@@ -512,41 +551,54 @@ function DraftRoute({
         return;
       }
 
-      if (!pickIsIn) {
-        toggle();
+      if (event.key === 'ArrowLeft') {
+        backOne();
         return;
       }
 
-      onKeyboardNextPick();
-    };
-
-    const handleArrowKeyDown = (event) => {
-      if (!event.key.startsWith('Arrow')) {
+      if (['ArrowUp', 'ArrowDown'].includes(event.key)) {
+        onOpenDraftOrder();
         return;
       }
 
-      event.preventDefault();
-      onOpenDraftOrder();
+      if (event.key === 'ArrowRight') {
+        onKeyboardNextPick();
+        return;
+      }
+
+      handlePickAction();
     };
 
     document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('keydown', handleArrowKeyDown);
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('keydown', handleArrowKeyDown);
     };
-  }, [onKeyboardNextPick, onOpenDraftOrder, pickIsIn, toggle]);
+  }, [backOne, keyboardIsDisabled, onKeyboardNextPick, onOpenDraftOrder, pickIsIn, toggle]);
+
+  const handleMouseDown = (event) => {
+    if (event.button !== 0) {
+      return;
+    }
+
+    if (!pickIsIn) {
+      toggle();
+      return;
+    }
+
+    onKeyboardNextPick();
+  };
 
   return (
-    <div className="timer">
+    <div className="timer" onMouseDown={handleMouseDown}>
       <header
         className={`timer-header ${pickIsIn ? 'timer-header-pick-is-in' : ''} ${
           nextPickIsEntering ? 'timer-header-next-pick-entering' : ''
         }`}
       >
         <div className="words" style={{ opacity: pickIsIn ? 0 : 100 }}>
-          <h1 className="onC">On the Clock: {currentTeam.name}</h1>
+          <div className="on-clock-label">On the Clock</div>
+          <h1 className="onC">{currentTeam.name}</h1>
         </div>
 
         <img
@@ -620,18 +672,6 @@ function DraftRoute({
 
         <div className="time-group" style={{ opacity: pickIsIn ? 0 : 100 }}>
           <h2 className="time">{formattedTime}</h2>
-          <button className="button" onClick={backOne}>
-            Previous Pick
-          </button>
-          <button
-            className={`button button-primary button-primary-${isActive ? 'active' : 'inactive'}`}
-            onClick={toggle}
-          >
-            {isActive ? 'Pick Is In' : 'Start'}
-          </button>
-          <button className="button" onClick={reset}>
-            Next Pick
-          </button>
           <h1 className="round">
             Round: {round}, Pick: {pick}
           </h1>
@@ -679,6 +719,12 @@ function DraftOrderEditor({ draftOrder, onCancel, onSave }) {
     });
   }, [draggedTeamId]);
 
+  const renameTeam = useCallback((teamId, name) => {
+    setOrderedTeams((currentTeams) =>
+      currentTeams.map((team) => (team.id === teamId ? { ...team, name } : team))
+    );
+  }, []);
+
   return (
     <div className="draft-order-overlay" role="dialog" aria-modal="true">
       <div className="draft-order-widget">
@@ -704,7 +750,14 @@ function DraftOrderEditor({ draftOrder, onCancel, onSave }) {
             >
               <span className="draft-order-number">{index + 1}</span>
               <img src={team.logo} alt="" />
-              <span>{team.name}</span>
+              <input
+                aria-label={`Team ${index + 1} name`}
+                className="draft-order-name-input"
+                onChange={(event) => renameTeam(team.id, event.target.value)}
+                onMouseDown={(event) => event.stopPropagation()}
+                onDragStart={(event) => event.preventDefault()}
+                value={team.name}
+              />
             </li>
           ))}
         </ol>
@@ -735,7 +788,6 @@ function App() {
   const [pickIsIn, setPickIsIn] = useState(false);
   const [pickIsAdvancing, setPickIsAdvancing] = useState(false);
   const [nextPickIsEntering, setNextPickIsEntering] = useState(false);
-  const [move, setMove] = useState(true);
   const [draftOrder, setDraftOrder] = useState(getSavedDraftOrder);
   const [draftOrderEditorIsOpen, setDraftOrderEditorIsOpen] = useState(false);
   const [draftIntroIsRunning, setDraftIntroIsRunning] = useState(false);
@@ -936,7 +988,6 @@ function App() {
         playChime();
         resetCountdownAudio();
         setPickIsIn(true);
-        setMove(false);
       }
 
       return !currentIsActive;
@@ -986,7 +1037,6 @@ function App() {
   }, [decreasePick]);
 
   const keyboardNextPick = useCallback(() => {
-    setMove(false);
     reset();
   }, [reset]);
 
@@ -1011,13 +1061,8 @@ function App() {
 
     const timer = setInterval(() => {
       setSeconds((currentSeconds) => {
-        if (currentSeconds < 150) {
-          setMove(true);
-        }
-
         if (pickIsIn) {
           resetCountdownAudio();
-          setMove(false);
         }
 
         if (currentSeconds === 12) {
@@ -1028,7 +1073,6 @@ function App() {
           return currentSeconds - 1;
         }
 
-        setMove(false);
         setPickIsIn(true);
         resetCountdownAudio();
         playChime();
@@ -1054,8 +1098,7 @@ function App() {
       backOne={backOne}
       currentTeam={currentTeam}
       formattedTime={formattedTime}
-      isActive={isActive}
-      move={move}
+      keyboardIsDisabled={draftOrderEditorIsOpen}
       nextTeam={nextTeam}
       onKeyboardNextPick={keyboardNextPick}
       onOpenDraftOrder={openDraftOrderEditor}
@@ -1063,12 +1106,15 @@ function App() {
       pickIsAdvancing={pickIsAdvancing}
       pickIsIn={pickIsIn}
       nextPickIsEntering={nextPickIsEntering}
-      reset={reset}
       round={round}
       toggle={toggle}
     />
   ) : (
-    <WelcomeRoute onOpenDraftOrder={openDraftOrderEditor} onStartDraft={startDraft} />
+    <WelcomeRoute
+      keyboardIsDisabled={draftOrderEditorIsOpen}
+      onOpenDraftOrder={openDraftOrderEditor}
+      onStartDraft={startDraft}
+    />
   );
 
   return (
