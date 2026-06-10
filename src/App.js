@@ -143,6 +143,7 @@ const getSavedDraftOrder = () => {
         : {};
     const withSavedName = (team) => ({
       ...team,
+      originalName: team.originalName || team.name,
       name: typeof teamNameById[team.id] === 'string' && teamNameById[team.id].trim()
         ? teamNameById[team.id].trim()
         : team.name,
@@ -291,7 +292,13 @@ const toNoteList = (value) => {
 };
 
 const getTeamNameCandidates = (team) => {
-  const names = [team.name, stripLeadingThe(team.name), ...(team.noteKeys || [])];
+  const names = [
+    team.name,
+    stripLeadingThe(team.name),
+    team.originalName,
+    stripLeadingThe(team.originalName),
+    ...(team.noteKeys || []),
+  ];
 
   return Array.from(new Set(names.filter(Boolean).map(normalizeTeamName)));
 };
@@ -1049,8 +1056,13 @@ function App() {
   }, []);
 
   const handleSaveDraftOrder = useCallback((nextDraftOrder) => {
-    setDraftOrder(nextDraftOrder);
-    saveDraftOrder(nextDraftOrder);
+    const normalizedDraftOrder = nextDraftOrder.map((team) => ({
+      ...team,
+      name: String(team.name || '').trim() || team.originalName || team.id,
+    }));
+
+    setDraftOrder(normalizedDraftOrder);
+    saveDraftOrder(normalizedDraftOrder);
     setDraftOrderEditorIsOpen(false);
   }, []);
 
